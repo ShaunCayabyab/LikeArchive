@@ -3,7 +3,7 @@
 	include('vendor/autoload.php');
 
 	// Authenticate via API Key
-	$client = new Tumblr\API\Client('[API KEY]');
+	$client = new Tumblr\API\Client('xnB7d27VGuKmr8VsR0u8ujzrCh4TgIF3MwpTAZmHCIqjdBth0m');
 
 	//Setting the limit variables for the GET request
 	if(isset($_POST['number'])){
@@ -21,7 +21,7 @@
 	}
 
 	// Makes the request for getting the liked posts
-	$getter = $client->getBlogLikes('echelonsmusic.tumblr.com', array('limit' => $limit, 'offset' => $offset));
+	$getter = $client->getBlogLikes('[TUMBLR USER]', array('limit' => $limit, 'offset' => $offset));
 
 	//return JSON of liked posts retrieved from GET request
 	echo json_encode($getter);
