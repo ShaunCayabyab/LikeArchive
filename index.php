@@ -17,21 +17,28 @@
 		<div id="navbar">
 			<img id="nav-logo" src="img/LikeArchiveLogo.png" />
 		</div>
+		<!--Generated content goes here-->
 		<div id="main-content">
 			<ul id="main-list">
 			</ul>
 		</div>
 		<div id="popup-container">
-
 			<div id="modal-box">
 			</div>
 		</div>
 		<script type="text/javascript" src="post_constructor.js"></script>
+		<!--end generated content-->
 		<!--Posts list Handlebars.js template-->
 		<script id="list-template" type="text/x-handlebars-template">
 				{{#posts}}
 					<li class='post-cell' data-cell="{{ID}}">
 							{{#if type.isText}}
+								<div class="text-container">
+									{{#if hasTitle}}
+										<h5>{{title}}</h5>
+									{{/if}}
+									{{{body}}}
+								</div>
 							{{/if}}
 							{{#if type.isPhoto}}
 								<div class="image-container">

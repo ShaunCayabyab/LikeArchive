@@ -21,7 +21,7 @@
 	}
 
 	// Makes the request for getting the liked posts
-	$getter = $client->getBlogLikes('[TUMBLR USER]', array('limit' => $limit, 'offset' => $offset));
+	$getter = $client->getBlogLikes('echelonsmusic.tumblr.com', array('limit' => $limit, 'offset' => $offset));
 
 	//return JSON of liked posts retrieved from GET request
 	echo json_encode($getter);

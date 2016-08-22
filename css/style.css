@@ -68,6 +68,16 @@ ul > li{
 	height: 170px;
 }
 
+.text-container{
+	font-size: 13px;
+	display: table-cell;
+	vertical-align: middle;
+	position: absolute;
+	border-radius: 5px;
+	width: 130px;
+	height: 170px;
+}
+
 .image-container > img{
 	max-width: 130px;
 	max-height: 170px;
