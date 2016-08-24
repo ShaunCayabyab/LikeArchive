@@ -22,4 +22,5 @@ Main view for the LikeArchive application. Produces the archival view of liked p
 - [Handlebars.js](http://handlebarsjs.com/) => Javascript templating engine used to generate the list of liked posts
 
 ## UPDATES
+- `08/23/2016` => Added a feature to search for users and display their liked posts, if made public. Also added a display for text posts.
 - `08/21/2016` => Initial commit, yay! Application currently can only view a single blog's liked posts. Looking into implementing a feature to view liked posts within a certain month.

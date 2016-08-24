@@ -3,7 +3,7 @@
 	include('vendor/autoload.php');
 
 	// Authenticate via API Key
-	$client = new Tumblr\API\Client('xnB7d27VGuKmr8VsR0u8ujzrCh4TgIF3MwpTAZmHCIqjdBth0m');
+	$client = new Tumblr\API\Client('[API KEY]');
 
 	//Setting the limit variables for the GET request
 	if(isset($_POST['number'])){
