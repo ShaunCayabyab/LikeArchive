@@ -10,9 +10,16 @@ $(document).ready(function(){
 		$("body").css('overflow', 'auto');
 	});
 
-	//Prevent modal window from closing when interacting with individual post
+	// Prevent modal window from closing when interacting with individual post
 	$("#modal-box").click(function(event){
 		event.stopPropagation();
+	});
+
+	// Enter key listener for submitting the inputted user in the search
+	$('#input').keypress(function (e) {
+	  if (e.which == 13) {
+	    PostStorage.getNewUser($("#input").val());
+	  }
 	});
 });
 
@@ -55,16 +62,18 @@ function makePostModal(some_ID){
 */
 var PostStorage = (function(){
 
+	var user_to_get = "rubberninja";
 	var all_post_data = [];
 
-	var executeAJAX = function(given_offset){
+	var executeAJAX = function(given_date){
 		// Handlebars.js template compiling
 		var source = $("#list-template").html();
 		var template = Handlebars.compile(source);
 
 		//data object for AJAX request
-		var post_data = {number: 50, 
-						 offset: given_offset};
+		var post_data = {user: user_to_get,
+						number: 50, 
+						before: given_date};
 
 		// AJAX request. calls tumblrclient.php,
 		// sends data object post_data,
@@ -75,6 +84,15 @@ var PostStorage = (function(){
 			type: 'POST',
 			data: post_data,
 			success: function(data){
+
+				// If we can retrieve liked posts (forbidden or no user found),
+				// catch error and display error message accordingly.
+				try{
+					JSON.parse(data);
+				}
+				catch(err){
+					return error(err);
+				}
 
 				// Must remove load-cell from ul
 				// so posts append can replace its position in the view.
@@ -112,11 +130,27 @@ var PostStorage = (function(){
 		});
 	};
 
+	/**
+	* morePosts
+	* =========
+	* Used to add more posts to the existing list.
+	* Function grabs the timestamp from the last post on the list
+	* and executes the AJAX request with the given timestamp.
+	* This is to ensure that the appending will start off where
+	* the posts lists ends.
+	*/
 	var morePosts = function(){
-		var offset = all_post_data.length;
-		executeAJAX(offset);
+		var new_date = all_post_data[all_post_data.length - 1].liked_timestamp;
+		executeAJAX(new_date);
 	};
 
+
+	/**
+	* getIndividualPost
+	* =================
+	* Function to grab individual post data for the modal window view.
+	* @param {int} post_id - The id data-set gotten from the chosen post-cell.
+	*/
 	var getIndividualPost = function(post_id){
 		//return all_post_data[post_id];
 
@@ -147,6 +181,40 @@ var PostStorage = (function(){
 		$("body").css('overflow', 'hidden');
 	};
 
+
+	/**
+	* setNewUser
+	* ==========
+	* Used to grab the liked posts of a searched user.
+	* Sets the user_to_get variable to the new user inputted
+	* in the text input.
+	* @param {String} some_input - The new user for grabbing liked posts
+	*/
+	var setNewUser = function(some_input){
+		user_to_get = some_input;
+		executeAJAX(Date.now() / 1000);
+	}
+
+	/**
+	* error
+	* =====
+	* Displays the caught error message to the console.
+	* @param {String} err - Caught error message 
+	*/
+	var error = function(err){
+		console.log("error!: " + err);
+		$("#error-message").css('display', 'block');
+	};
+
+
+	/*
+	* PUBLIC FUNCTIONS TO RETURN
+	* ==========================
+	* @function retrievePost - To get an individual post
+	* @function loadMorePosts - Loads more posts...
+	* @function getPostsOnLoad - Initializes the post loading on start-up
+	* @function getNewUser - Grabs the inputted new user on the nav form
+	*/
 	return{
 		retrievePost:function(post_id){
 			getIndividualPost(post_id);
@@ -155,10 +223,12 @@ var PostStorage = (function(){
 			morePosts();
 		},
 		getPostsOnLoad: function(){
-			executeAJAX(0);
+			executeAJAX(Date.now() / 1000);
 		},
-		getPosts:function(){
-
+		getNewUser:function(some_input){
+			$("#error-message").css('display', 'none');
+			document.getElementById('main-list').innerHTML = '';
+			setNewUser(some_input);
 		}
 	};
 
@@ -186,6 +256,13 @@ var PostStorage = (function(){
 */
 var PostConstructor = (function(){
 
+	/**
+	* textPost
+	* ========
+	* Constructor function for a text post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var textPost = function(post, post_to_build){
 		post_to_build.type.isText = true;
 		post_to_build.type.hasTitle = (post.title !== null) ? true : false;
@@ -195,8 +272,8 @@ var PostConstructor = (function(){
 	};
 
 	/**
-	* =========
-	* PHOTOPOST
+	* 
+	* photoPost
 	* =========
 	* Builder function for photo posts.
 	* Extracts appropriate JSON data
@@ -211,9 +288,6 @@ var PostConstructor = (function(){
 
 		post_to_build.type.isPhoto = true;
 
-		// Obtain the array of photo objects from the post
-		var thumb_photo = post.photos[0].alt_sizes[0];
-
 		// Iterate through the array to find the appropriate-sized image.
 		for(var i = 0; i < post.photos[0].alt_sizes.length; i++){
 			if(post.photos[0].alt_sizes[i].width === 250) post_to_build.photoURL = post.photos[0].alt_sizes[i].url;
@@ -226,34 +300,68 @@ var PostConstructor = (function(){
 		return post_to_build;
 	};
 
+	/**
+	* quotePost
+	* ========
+	* Constructor function for a quote post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var quotePost = function(post, post_to_build){
 		post_to_build.type.isQuote = true;
 		return post_to_build;			
 	};
 
+	/**
+	* linkPost
+	* ========
+	* Constructor function for a link post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var linkPost = function(post, post_to_build){
 		post_to_build.type.isLink = true;
 		return post_to_build;
 	};
 
+	/**
+	* chatPost
+	* ========
+	* Constructor function for a chat post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var chatPost = function(post, post_to_build){
 		post_to_build.type.isChat = true;
 		return post_to_build;
 	};
 
+	/**
+	* audioPost
+	* ========
+	* Constructor function for a audio post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var audioPost = function(post, post_to_build){
 		post_to_build.type.isAudio = true;
 		return post_to_build;
 	};
 
+	/**
+	* videoPost
+	* ========
+	* Constructor function for a video post.
+	* @param {JSON} post - Retrieved post data
+	* @param {JSON} post_to_build - The post we have to build
+	*/
 	var videoPost = function(post, post_to_build){
 		post_to_build.type.isVideo = true;
 		return post_to_build;
 	};
 
 	/**
-	* ==========
-	* ANSWERPOST
+	* answerPost
 	* ==========
 	* Constructs the JSON object for an answer post.
 	*
@@ -273,6 +381,14 @@ var PostConstructor = (function(){
 		return post_to_build;
 	};
 
+	/**
+	* buildPost
+	* =========
+	* Main constructor function for building the post cell.
+	* Determines the post type then executes the appropriate function
+	* for each post.
+	* @param {JSON} post - Given post data
+	*/
 	var buildPost = function(post){
 		// Final product JSON object for the post
 		var built_post = {};
@@ -324,6 +440,11 @@ var PostConstructor = (function(){
 
 	};
 
+	/**
+	* FUNCTION TO RETURN
+	* ==================
+	* @function buildPost
+	*/
 	return{
 		buildPost:function(post){
 			return buildPost(post);

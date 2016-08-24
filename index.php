@@ -15,10 +15,18 @@
 	</head>
 	<body>
 		<div id="navbar">
-			<img id="nav-logo" src="img/LikeArchiveLogo.png" />
+			<div id="nav-content">
+				<span class="nav-logo">
+					<img id="nav-logo" src="img/LikeArchiveLogo.png" />
+				</span>
+				<span class="user-input">
+					<input id="input" type="text" name="user" value="rubberninja" placeholder="enter username">.tumblr.com
+				</span>
+			</div>
 		</div>
 		<!--Generated content goes here-->
 		<div id="main-content">
+			<h2 id="error-message">Oops! It seems that either this user doesn't exist, or the user set their liked posts to private</h2>
 			<ul id="main-list">
 			</ul>
 		</div>
@@ -61,9 +69,11 @@
 									</div>
 								</div>
 							{{/if}}
+						<a href="javascript:void(0);">
 						<div class="hover-container" onclick="makePostModal({{ID}})">
 							<p>liked from:<br>{{reblogged_from}}</p>
 						</div>
+						</a>
 						<div class='modal-window'>
 						</div>
 					</li>
@@ -76,6 +86,29 @@
 		<!--Modal Box Handlebars.s Template-->
 		<script id="modal-box-template" type="text/x-handlebars-template">
 				{{#if post_type.isText}}
+					<div class="modal-header">
+						<p>
+							<span class="who-reblog">Liked from {{blog_name}}</span>
+							{{#if hasSource}}
+								<span class="who-source">Source: {{source_title}}</span>
+							{{/if}}
+						</p>
+					</div>
+					<div class="modal-caption">
+						{{{body}}}
+					</div>
+					<div class="modal-footer">
+						<div class="tags">
+							<p>
+								{{#tags}}
+									<a href="">#{{this}}</a>
+								{{/tags}}
+							</p>
+						</div>
+						<div class="notes">
+							<p>{{note_count}} notes</p>
+						</div>
+					</div>
 				{{/if}}
 				{{#if post_type.isPhoto}}
 					<div class="modal-header">
