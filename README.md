@@ -21,13 +21,14 @@ Main view for the LikeArchive application. Produces the archival view of liked p
 - jQuery => used for AJAX requests and certain DOM manipulation
 - [Handlebars.js](http://handlebarsjs.com/) => Javascript templating engine used to generate the list of liked posts
 
-##SETUP
+## SETUP
 
 ```
 git clone git@github.com:ShaunCayabyab/LikeArchive.git
 cd src
 composer install
 cd ..
+docker-compose up -d
 ```
 Then `open http://$(docker-machine ip):8282` or `localhost:8282`
 
