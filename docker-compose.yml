@@ -1,0 +1,10 @@
+# PHP Web Server
+apache:
+  container_name: like-archive
+  build: .
+  ports:
+    - 8282:80
+  volumes:
+    - config/:/usr/local/etc/php/
+    - src/:/var/www/html/
+  restart: always
