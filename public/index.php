@@ -10,14 +10,14 @@
 			  crossorigin="anonymous"></script>
 		<!--Handlbars.js library-->	  
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-		<link rel="stylesheet" href="css/style.css" media="screen">
+		<link rel="stylesheet" href="src/css/style.css" media="screen">
 		<title>LikeArchive</title>
 	</head>
 	<body>
 		<div id="navbar">
 			<div id="nav-content">
 				<span class="nav-logo">
-					<img id="nav-logo" src="img/LikeArchiveLogo.png" />
+					<img id="nav-logo" src="src/img/LikeArchiveLogo.png" />
 				</span>
 				<span class="user-input">
 					<input id="input" type="text" name="user" value="rubberninja" placeholder="enter username">.tumblr.com
@@ -34,7 +34,7 @@
 			<div id="modal-box">
 			</div>
 		</div>
-		<script type="text/javascript" src="post_constructor.js"></script>
+		<script type="text/javascript" src="src/js/post_constructor.js"></script>
 		<!--end generated content-->
 		<!--Posts list Handlebars.js template-->
 		<script id="list-template" type="text/x-handlebars-template">
@@ -79,11 +79,11 @@
 					</li>
 				{{/posts}}
 				<li id="load-cell" class="post-cell" onclick="loadPosts()">
-					<img src="img/plus.png" />
+					<img src="src/img/plus.png" />
 				</li>
 		</script>
 		<!--end Template-->
-		<!--Modal Box Handlebars.s Template-->
+		<!--Modal Box Handlebars.js Template-->
 		<script id="modal-box-template" type="text/x-handlebars-template">
 				{{#if post_type.isText}}
 					<div class="modal-header">

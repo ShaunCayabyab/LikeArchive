@@ -1,9 +1,12 @@
 <?php
 	//PHP client autoload
-	include('vendor/autoload.php');
+	include( dirname( dirname(__FILE__) ) . '/vendor/autoload.php' );
+
+	//Secured API Key (not for you!)
+	require_once( dirname( dirname(__FILE__) ) . '/secure/api_key.php' );
 
 	// Authenticate via API Key
-	$client = new Tumblr\API\Client('xnB7d27VGuKmr8VsR0u8ujzrCh4TgIF3MwpTAZmHCIqjdBth0m');
+	$client = new Tumblr\API\Client($api_key);
 
 	//Setting the limit variables for the GET request
 	if(isset($_POST['number'])){

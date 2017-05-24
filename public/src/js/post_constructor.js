@@ -80,7 +80,7 @@ var PostStorage = (function(){
 		// if success, construct the a JSON
 		// of posts to render onto view.
 		$.ajax({
-			url: 'tumblrclient.php',
+			url: '../public/php/tumblrclient.php',
 			type: 'POST',
 			data: post_data,
 			success: function(data){
