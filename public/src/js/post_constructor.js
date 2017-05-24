@@ -16,11 +16,13 @@ $(document).ready(function(){
 	});
 
 	// Enter key listener for submitting the inputted user in the search
+	/*
 	$('#input').keypress(function (e) {
 	  if (e.which == 13) {
 	    PostStorage.getNewUser($("#input").val());
 	  }
 	});
+	*/
 });
 
 
