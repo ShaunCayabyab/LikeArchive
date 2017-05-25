@@ -1,16 +1,14 @@
-var likeArchiveApp = angular.module('likeArchive', []);
+var likeArchiveApp = angular.module('likeArchive', ['ngSanitize']);
 
-likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostConstructor, $scope, $http){
+likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, $scope, $http){
 
 	//User to search
 	$scope.user_to_get = "rubberninja";
 
 	//Total posts manifest
 	$scope.all_post_data = [];
+	$scope.thumbnails = [];
 
-	//Some Handlebars.js handling (kept for now)
-	$scope.source = $("#list-template").html();
-	$scope.template = Handlebars.compile($scope.source);
 
 
 	/**
@@ -19,7 +17,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function to get a new user's liked posts
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	$scope.getUserLikes = function(){
 
@@ -27,7 +25,9 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 
 		//Clear the view of all posts
 		$("#error-message").css('display', 'none');
-		document.getElementById('main-list').innerHTML = '';
+		$("#load-cell").fadeOut(1);
+
+		$scope.thumbnails = [];
 
 		//Grab the search query
 		$scope.user_to_get = document.getElementById('user-search-input').value;
@@ -44,7 +44,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function to load more of a user's liked posts
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	$scope.getMoreLikes = function(){
 
@@ -61,7 +61,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function invoked when getNewUser is successful
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	newUserSuccess = function(data){
 
@@ -73,7 +73,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 		var likes = angular.fromJson(data).liked_posts;
 
 		//Remove the load-cell if need be
-		$('#load-cell').remove();
+		//$('#load-cell').remove();
 
 		
 		//Iterate through likes to construct thumbnails
@@ -91,10 +91,10 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 			//Push generated post to post list
 			posts_to_return.posts.push(individual_post);
 
+			$scope.thumbnails.push(individual_post);
 		}
 
-		// All done! append to existing list on view.
-		$("#main-list").append($scope.template(posts_to_return));
+		$("#load-cell").fadeIn(1);
 		
 	}
 
@@ -105,7 +105,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function invoked when getNewUser fails
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	newUserFailure = function(data){
 
@@ -120,7 +120,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function invoked when getMoreLikes is successful
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	moreLikesSuccess = function(data){
 
@@ -133,7 +133,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 	*
 	* Function invoked when getMoreLikes fails
 	*
-	* @since 1.0.1
+	* @since 1.1.0
 	*/
 	moreLikesFailure = function(data){
 
@@ -149,7 +149,7 @@ likeArchiveApp.controller('userSearch', function userSearch(GetLikedPosts, PostC
 *
 * Factory service to execute the http request
 *
-* @since 1.0.1
+* @since 1.1.0
 */
 likeArchiveApp.factory('GetLikedPosts', function($http){
 
@@ -162,7 +162,7 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 		*
 		* For executing the API request
 		*
-		* @since 1.0.1
+		* @since 1.1.0
 		* @param user        The given username
 		* @param date        The given timestamp to find posts before
 		* @param onSuccess   The success callback function
@@ -192,7 +192,7 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 *
 * Factory service for implementing the post thumbnail construction
 *
-* @since 1.0.1
+* @since 1.1.0
 */
 likeArchiveApp.factory('PostConstructor', function(){
 
