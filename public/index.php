@@ -8,11 +8,19 @@
 			  src="https://code.jquery.com/jquery-2.2.4.min.js"
 			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
 			  crossorigin="anonymous"></script>
-		<!--Handlbars.js library-->	  
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+		<!--AngularJS dependencies-->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
 		<script src="https://code.angularjs.org/1.5.6/angular-sanitize.min.js"></script>
+		<!--App file-->
 		<script type="text/javascript" src="src/js/posts.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				// Prevent modal window from closing when interacting with individual post
+				$("#modal-box").click(function(event){
+					event.stopPropagation();
+				});
+			});
+		</script>
 		<link rel="stylesheet" href="src/css/style.css" media="screen">
 		<title>LikeArchive</title>
 	</head>
@@ -66,88 +74,66 @@
 								</div>
 							</div>
 							<a href="javascript:void(0);">
-								<div class="hover-container" ng-click="">
+								<div class="hover-container" ng-click="individualPost($index)">
 									<p>liked from:<br>{{post.reblogged_from}}</p>
 								</div>
 								</a>
 						</li>
-						<li id="load-cell" class="post-cell" onclick="loadPosts()">
+						<li id="load-cell" class="post-cell" ng-click="getMoreLikes()">
 							<img src="src/img/plus.png" />
 						</li>
 					</ul>
 				</div>
-				<div id="popup-container">
+				<div id="popup-container" ng-click="clearModal()">
 					<div id="modal-box">
+						<div ng-if="modal_post.post_type.isText">
+							<div class="modal-header">
+								<p>
+									<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
+									<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
+								</p>
+							</div>
+							<div class="modal-caption" ng-bind-html="modal_post.body">
+								{{modal_post.body}}
+							</div>
+							<div class="modal-footer">
+								<div class="tags">
+									<p>
+										<a ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
+									</p>
+								</div>
+								<div class="notes">
+									<p>{{modal_post.note_count}} notes</p>
+								</div>
+							</div>
+						</div>
+						<div ng-if="modal_post.post_type.isPhoto">
+							<div class="modal-header">
+								<p>
+									<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
+									<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
+								</p>
+							</div>
+							<div class="modal-content">
+									<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[0].url}}" />
+							</div>
+							<div class="modal-caption" ng-bind-html="modal_post.caption">
+								{{modal_post.caption}}
+							</div>
+							<div class="modal-footer">
+								<div class="tags">
+									<p>
+										<a ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
+									</p>
+								</div>
+								<div class="notes">
+									<p>{{modal_post.note_count}} notes</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--Modal Box Handlebars.js Template-->
-		<script id="modal-box-template" type="text/x-handlebars-template">
-				{{#if post_type.isText}}
-					<div class="modal-header">
-						<p>
-							<span class="who-reblog">Liked from {{blog_name}}</span>
-							{{#if hasSource}}
-								<span class="who-source">Source: {{source_title}}</span>
-							{{/if}}
-						</p>
-					</div>
-					<div class="modal-caption">
-						{{{body}}}
-					</div>
-					<div class="modal-footer">
-						<div class="tags">
-							<p>
-								{{#tags}}
-									<a href="">#{{this}}</a>
-								{{/tags}}
-							</p>
-						</div>
-						<div class="notes">
-							<p>{{note_count}} notes</p>
-						</div>
-					</div>
-				{{/if}}
-				{{#if post_type.isPhoto}}
-					<div class="modal-header">
-						<p>
-							<span class="who-reblog">Liked from {{blog_name}}</span>
-							{{#if hasSource}}
-								<span class="who-source">Source: {{source_title}}</span>
-							{{/if}}
-						</p>
-					</div>
-					<div class="modal-content">
-						{{#photos}}
-							<img src="{{alt_sizes.0.url}}" />
-						{{/photos}}
-					</div>
-					<div class="modal-caption">
-						{{{caption}}}
-					</div>
-					<div class="modal-footer">
-						<div class="tags">
-							<p>
-								{{#tags}}
-									<a href="">#{{this}}</a>
-								{{/tags}}
-							</p>
-						</div>
-						<div class="notes">
-							<p>{{note_count}} notes</p>
-						</div>
-					</div>
-				{{/if}}
-				{{#if post_type.isQuote}}
-				{{/if}}
-				{{#if post_type.isLink}}
-				{{/if}}
-				{{#if post_type.isVideo}}
-				{{/if}}
-				{{#if post_type.isAnswer}}
-				{{/if}}
-		</script>
-		<!--End Template-->
 	</body>
 </html>

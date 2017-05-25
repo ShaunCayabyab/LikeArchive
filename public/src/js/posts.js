@@ -8,6 +8,7 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 	//Total posts manifest
 	$scope.all_post_data = [];
 	$scope.thumbnails = [];
+	$scope.modal_post;
 
 
 
@@ -33,7 +34,7 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 		$scope.user_to_get = document.getElementById('user-search-input').value;
 
 		//Execute generation of new user's liked posts
-		GetLikedPosts.getLikes($scope.user_to_get, Date.now() / 1000, newUserSuccess, newUserFailure);
+		GetLikedPosts.getLikes($scope.user_to_get, Date.now() / 1000, onSuccess, onFailure);
 
 	};
 
@@ -50,30 +51,72 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 
 		var new_date = $scope.all_post_data[$scope.all_post_data.length - 1].liked_timestamp;
 
-		GetLikedPosts.getLikes($scope.user_to_get, new_date, moreLikesSuccess, moreLikesFailure);
+		$("#load-cell").fadeOut(200);
+
+		GetLikedPosts.getLikes($scope.user_to_get, new_date, onSuccess, onFailure);
+
+	};
+
+
+	/**
+	* individualPost
+	* ==============
+	*
+	* Used to grab data from an individual liked post
+	* and display it on the modal window.
+	*
+	* @since 1.1.0
+	* @param someID    The given ID for the selected post
+	*/
+	$scope.individualPost = function(someID){
+
+		//Preparing the data for modal display
+		var post = $scope.all_post_data[someID];
+		post.hasSource = (!post.hasOwnProperty("source_url") && !post.hasOwnProperty("source_title")) ? false : true;
+
+		$scope.modal_post = {};
+		$scope.modal_post = post;
+		$scope.modal_post.post_type = $scope.thumbnails[someID].type;
+
+		$("#popup-container").css('visibility', 'visible');
+		$("body").css('overflow', 'hidden');
+
+	};
+
+
+	/**
+	* clearModal
+	* ==========
+	*
+	* For the purpose of clearing data from the modal template
+	* some previously viewed post is no longer visible.
+	*
+	* @since 1.1.0
+	*/
+	$scope.clearModal = function(){
+
+		$scope.modal_post = {};
+		$("#popup-container").css('visibility', 'hidden');
+		$("body").css('overflow', 'auto');
 
 	}
 
 
 	/**
-	* newUserSuccess
-	* ==============
+	* onSuccess
+	* =========
 	*
-	* Function invoked when getNewUser is successful
+	* Function invoked when API request is successful
 	*
 	* @since 1.1.0
+	* @param data    The retrieved data from the successful API call
 	*/
-	newUserSuccess = function(data){
+	onSuccess = function(data){
 
-		//Array of received liked posts to append onto list
-		var posts_to_return = {posts: []};
 		var post_offset = $scope.all_post_data.length;
 
 		//Parsing of liked posts data
 		var likes = angular.fromJson(data).liked_posts;
-
-		//Remove the load-cell if need be
-		//$('#load-cell').remove();
 
 		
 		//Iterate through likes to construct thumbnails
@@ -88,9 +131,6 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 			//Push data to total manifest of posts
 			$scope.all_post_data.push(likes[i]);
 
-			//Push generated post to post list
-			posts_to_return.posts.push(individual_post);
-
 			$scope.thumbnails.push(individual_post);
 		}
 
@@ -103,39 +143,14 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 	* newUserFailure
 	* ==============
 	*
-	* Function invoked when getNewUser fails
+	* Function invoked when API request fails
 	*
 	* @since 1.1.0
+	* @param data    Data sent from failed API call
 	*/
-	newUserFailure = function(data){
+	onFailure = function(data){
 
 		console.log(data);
-
-	}
-
-
-	/**
-	* moreLikesSuccess
-	* ================
-	*
-	* Function invoked when getMoreLikes is successful
-	*
-	* @since 1.1.0
-	*/
-	moreLikesSuccess = function(data){
-
-	}
-
-
-	/**
-	* moreLikesFailure
-	* ================
-	*
-	* Function invoked when getMoreLikes fails
-	*
-	* @since 1.1.0
-	*/
-	moreLikesFailure = function(data){
 
 	}
 
