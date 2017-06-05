@@ -3,9 +3,19 @@ apache:
   container_name: like-archive
   build: .
   ports:
-    - 8282:80
+    - "8080:80"
   volumes:
-    - config/:/usr/local/etc/php/
-    - secure/:/var/
-    - src/:/var/www/html/
+    - ./config:/usr/local/etc/php
+    - ./public:/var/www/html
+  links:
+    - mysql:mysql
   restart: always
+
+# MySQL Server
+mysql:
+  container_name: like-archive-mysql
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: 'root'
+  volumes:
+    - ./database:/docker-entrypoint-initdb.d

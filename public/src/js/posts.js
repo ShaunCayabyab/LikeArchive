@@ -237,7 +237,7 @@ likeArchiveApp.factory('PostConstructor', function(){
 	*
 	* @param {JSON} post
 	* @param {JSON} post_to_build
-	* @return {JSON} post_to_build - {photoURL}
+	* @return {JSON} post_to_build - {thumbnailURL}
 	*/
 	var photoPost = function(post, post_to_build){
 
@@ -245,11 +245,14 @@ likeArchiveApp.factory('PostConstructor', function(){
 
 		// Iterate through the array to find the appropriate-sized image.
 		for(var i = 0; i < post.photos[0].alt_sizes.length; i++){
-			if(post.photos[0].alt_sizes[i].width === 250) post_to_build.photoURL = post.photos[0].alt_sizes[i].url;
+			if(post.photos[0].alt_sizes[i].width <= 250){
+				post_to_build.thumbnailURL = post.photos[0].alt_sizes[i].url;
+				break;
+			}
 		}
 
 		// If not found, let's just use the original uploaded image (first image object in the array)
-		if(!post_to_build.hasOwnProperty('photoURL')) post_to_build.photoURL = post.photos[0].alt_sizes[0].url;
+		if(!post_to_build.hasOwnProperty('thumbnailURL')) post_to_build.thumbnailURL = post.photos[0].alt_sizes[0].url;
 
 		// Got all we need. Return the photo post JSON.
 		return post_to_build;
@@ -351,6 +354,7 @@ likeArchiveApp.factory('PostConstructor', function(){
 		// Setting up some known post object traits.
 		built_post.reblogged_from = post.blog_name;
 		built_post.type = {isText: false, isPhoto: false, isQuote: false, isLink: false, isChat: false, isAudio: false, isVideo: false, isAnswer: false};
+		built_post.type.type = post.type;
 
 		// Switch cases for proper post type function routing.
 		switch(post.type){

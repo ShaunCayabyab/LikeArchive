@@ -1,0 +1,68 @@
+.image-container{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	position: absolute;
+	border-radius: 5px;
+	width: 130px;
+	height: 170px;
+}
+
+.text-container{
+	font-size: 13px;
+	display: table-cell;
+	vertical-align: middle;
+	position: absolute;
+	border-radius: 5px;
+	width: 130px;
+	height: 170px;
+}
+
+.text-container .tmblr-full> img{
+	max-width: 130px;
+	max-height: 170px;
+}
+
+.image-container > img{
+	max-width: 130px;
+	max-height: 170px;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	text-align: left;
+	z-index: 1;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.qa-container{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	position: absolute;
+	border-radius: 5px;
+	width: 130px;
+	height: 170px;
+}
+
+.question-container{
+	padding: 2px 2px 2px 2px;
+	font-size: 12px;
+	background-color: #aab1bb;
+}
+
+.question-container > figure > img{
+	max-width: 130px;
+}
+
+.answer-container{
+	font-size: 12px;
+}
+
+.answer-container > blockquote, figure{
+	margin: 0;
+}
+
+.answer-container .tmblr-full > img{
+	max-width: 130px;
+}

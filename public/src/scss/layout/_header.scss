@@ -1,0 +1,36 @@
+#navbar{
+	top: 0;
+	width: 100vw;
+	height: 70px;
+	background-color: #35465c;
+	position: fixed;
+	z-index: 1000;
+}
+
+#nav-content{
+	display: inline-block;
+	height: 100%;
+	margin: 10px 0 0 10px;
+}
+
+#navbar > #nav-content > .nav-logo{
+	vertical-align: middle;
+	padding: 10px 0 0 10px;
+	position: relative;
+}
+
+.user-input{
+	position: relative;
+	vertical-align: bottom;
+	margin: 0 0 0 30px;
+	font-size: 21px;
+	color: white;
+}
+
+input[type=text]{
+	box-sizing: border-box;
+	padding: 0 4px 0 4px;
+	width: 199px;
+	text-align: right;
+	font-size: 18px;
+}

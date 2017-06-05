@@ -21,7 +21,7 @@
 				});
 			});
 		</script>
-		<link rel="stylesheet" href="src/css/style.css" media="screen">
+		<link rel="stylesheet" href="build/css/main.css" media="screen">
 		<title>LikeArchive</title>
 	</head>
 	<body>
@@ -30,7 +30,7 @@
 				<div id="navbar">
 					<div id="nav-content">
 						<span class="nav-logo">
-							<img id="nav-logo" src="src/img/LikeArchiveLogo.png" />
+							<img id="nav-logo" src="build/images/LikeArchiveLogo.png" />
 						</span>
 						<span class="user-input">
 							<input id="user-search-input" type="text" name="user" value="rubberninja" placeholder="enter username">.tumblr.com
@@ -38,6 +38,7 @@
 						</span>
 					</div>
 				</div>
+				<!--Post Thumbnails-->
 				<div id="main-content">
 					<ul id="main-list">
 						<li class='post-cell' data-ng-repeat="post in thumbnails track by $index" data-cell="{{$index}}">
@@ -47,20 +48,19 @@
 								{{ post.body }}
 							</div>
 							
-							<div ng-if="post.type.isPhoto" class="image-container">
+							<div ng-if="post.type.isPhoto" class="image-container" style="background-image: url({{ post.thumbnailURL }}); background-position: top; background-size: cover;">
 							<!--Photo Post-->
-								<img ng-src="{{ post.photoURL }}" />
 							</div>
 							
-							<div ng-if="post.type.isQuote" class="text-container">
+							<div ng-if="post.type.isQuote" class="quote-container">
 							<!--Quote Post-->
 							</div>
 							
-							<div ng-if="post.type.isLink" class="text-container">
+							<div ng-if="post.type.isLink" class="link-container">
 							<!--Link Post-->
 							</div>
 							
-							<div ng-if="post.type.isVideo" class="text-container">
+							<div ng-if="post.type.isVideo" class="video-container">
 							<!--Video Post-->
 							</div>
 							
@@ -74,16 +74,17 @@
 								</div>
 							</div>
 							<a href="javascript:void(0);">
-								<div class="hover-container" ng-click="individualPost($index)">
+								<div class="hover-container {{post.type.type}}" ng-click="individualPost($index)">
 									<p>liked from:<br>{{post.reblogged_from}}</p>
 								</div>
 								</a>
 						</li>
 						<li id="load-cell" class="post-cell" ng-click="getMoreLikes()">
-							<img src="src/img/plus.png" />
+							<img src="build/images/plus.png" />
 						</li>
 					</ul>
 				</div>
+				<!--Post Modal Window-->
 				<div id="popup-container" ng-click="clearModal()">
 					<div id="modal-box">
 						<div ng-if="modal_post.post_type.isText">

@@ -1,3 +1,5 @@
 vendor/
 
 public/secure/
+
+node_modules/

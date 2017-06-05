@@ -1,0 +1,74 @@
+#modal-box{
+	max-width: 540px;
+	background-color: #FFF;
+
+	border-radius: 5px;
+	margin: 90px auto 25px auto;
+	position: relative;
+	z-index: 30;
+}
+
+.modal-header{
+	height: 30px;
+	padding: 10px 10px 0 10px;
+}
+
+.who-reblog{
+	display: table-cell;
+	vertical-align: middle;
+	float: left;
+}
+
+.who-source{
+	display: table-cell;
+	vertical-align: middle;
+	float: right;
+}
+
+.modal-header > p{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.modal-content{
+	text-align: center;
+}
+
+.modal-content > img{
+	max-width: 100%;
+}
+
+.modal-caption{
+	border-top: solid grey 1px;
+}
+
+.modal-caption, .modal-footer{
+	padding: 20px;
+}
+
+.modal-caption .tmblr-full > img{
+	max-width: 90%;
+}
+
+#shadow-container{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 20;
+}
+
+#popup-container{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	visibility: hidden;
+	top: 0;
+	left: 0;
+	z-index: 50;
+	overflow: auto;
+	background: rgba(0, 0, 0, 0.5);
+}
