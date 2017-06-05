@@ -42,29 +42,29 @@
 				<div id="main-content">
 					<ul id="main-list">
 						<li class='post-cell' data-ng-repeat="post in thumbnails track by $index" data-cell="{{$index}}">
-							<div ng-if="post.type.isText" class="text-container" ng-bind-html="post.body">
+							<div ng-if="post.type.isText" class="thumbnail-container text-container" ng-bind-html="post.body">
 							<!--Text Post-->
 								<h5 ng-if="post.type.hasTitle">{{post.title}}</h5>
 								{{ post.body }}
 							</div>
 							
-							<div ng-if="post.type.isPhoto" class="image-container" style="background-image: url({{ post.thumbnailURL }}); background-position: top; background-size: cover;">
+							<div ng-if="post.type.isPhoto" class="thumbnail-container image-container" style="background-image: url({{ post.thumbnailURL }}); background-position: top; background-size: cover;">
 							<!--Photo Post-->
 							</div>
 							
-							<div ng-if="post.type.isQuote" class="quote-container">
+							<div ng-if="post.type.isQuote" class="thumbnail-container quote-container">
 							<!--Quote Post-->
 							</div>
 							
-							<div ng-if="post.type.isLink" class="link-container">
+							<div ng-if="post.type.isLink" class="thumbnail-container link-container">
 							<!--Link Post-->
 							</div>
 							
-							<div ng-if="post.type.isVideo" class="video-container">
+							<div ng-if="post.type.isVideo" class="thumbnail-container video-container">
 							<!--Video Post-->
 							</div>
 							
-							<div ng-if="post.type.isAnswer" class="qa-container">
+							<div ng-if="post.type.isAnswer" class="thumbnail-container qa-container">
 							<!--Answer Post-->
 								<div class="question-container">
 									<p><b>{{post.question.asker}}:</b> {{post.question.question}}</p>
@@ -87,49 +87,35 @@
 				<!--Post Modal Window-->
 				<div id="popup-container" ng-click="clearModal()">
 					<div id="modal-box">
+						<div class="modal-header">
+							<p>
+								<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
+								<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
+							</p>
+						</div>
 						<div ng-if="modal_post.post_type.isText">
-							<div class="modal-header">
-								<p>
-									<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
-									<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
-								</p>
-							</div>
+						<!--Text Modal-->
 							<div class="modal-caption" ng-bind-html="modal_post.body">
 								{{modal_post.body}}
 							</div>
-							<div class="modal-footer">
-								<div class="tags">
-									<p>
-										<a ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
-									</p>
-								</div>
-								<div class="notes">
-									<p>{{modal_post.note_count}} notes</p>
-								</div>
-							</div>
 						</div>
 						<div ng-if="modal_post.post_type.isPhoto">
-							<div class="modal-header">
-								<p>
-									<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
-									<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
-								</p>
-							</div>
+						<!--Photo Modal-->
 							<div class="modal-content">
-									<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[0].url}}" />
+								<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[1].url}}" />
 							</div>
 							<div class="modal-caption" ng-bind-html="modal_post.caption">
 								{{modal_post.caption}}
 							</div>
-							<div class="modal-footer">
-								<div class="tags">
-									<p>
-										<a ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
-									</p>
-								</div>
-								<div class="notes">
-									<p>{{modal_post.note_count}} notes</p>
-								</div>
+						</div>
+						<div class="modal-footer">
+							<div class="tags-list">
+								<p>
+									<a class="tag" ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
+								</p>
+							</div>
+							<div class="notes">
+								<p>{{modal_post.note_count}} notes</p>
 							</div>
 						</div>
 					</div>

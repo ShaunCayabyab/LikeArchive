@@ -11,7 +11,7 @@ Within the application, users can view the liked posts of theirs, or of a Tumblr
 - jQuery - (2.2.4)
 - [AngularJS](https://angularjs.org/) - (1.5.6)
 
-## SETUP
+## DEVELOPMENT SETUP
 
 ```
 git clone git@github.com:ShaunCayabyab/LikeArchive.git
@@ -20,7 +20,7 @@ composer install
 cd ..
 docker-compose up -d
 ```
-Then `open http://$(docker-machine ip):8282` or `localhost:8282`
+Then `open http://$(docker-machine ip):8080` or `localhost:8080`
 
 ## UPDATES
 - `05/25/2017` => Picked this project back up again, and man it needed improving! Converted to use AngularJS for front-end functionality.

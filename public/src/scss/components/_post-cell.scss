@@ -1,10 +1,8 @@
-ul > li{
-	width: 130px;
-	height: 170px;
+ul > .post-cell{
+	@include thumb-container-dimensions;
 	vertical-align: top;
 	display: inline-block;
 	margin: 5px 5px 5px 5px;
-	border: solid black 1px;
 	background-color: #FFF;
 }
 
@@ -12,51 +10,24 @@ ul > li{
 	border-radius: 5px;
 	position: relative;
 	overflow: hidden;
+	-webkit-box-shadow: 7px 9px 4px -5px rgba(64,64,64,0.15);
+	-moz-box-shadow: 7px 9px 4px -5px rgba(64,64,64,0.15);
+	box-shadow: 7px 9px 4px -5px rgba(64,64,64,0.15);
 }
 
 .hover-container{
 	position: absolute;
 	text-align: center;
-	background-color: #FFF;
-	width: 130px;
-	height: 170px;
+	@include thumb-container-dimensions-padding;
+	@include text-padding;
+	word-wrap: break-word;
 	border-radius: 4px;
 	z-index: 10;
 	opacity: 0;
 	transition: opacity 0.2s;
 }
 
-.text{
-	background-color: #FFF;
-}
-
-.photo{
-	background-color: #d95e40;
-}
-
-.quote{
-	background-color: #f2992e;
-}
-
-.link{
-	background-color: #56bc8a;
-}
-
-.chat{
-	background-color: #529ecc;
-}
-
-.audio{
-	background-color: #a77dc2;
-}
-
-.video{
-	background-color: #748089;
-}
-
-.answer{
-	background-color: #529ecc;		
-}
+@include container-colors;
 
 .hover-container:hover{
 	opacity: .9;

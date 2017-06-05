@@ -1,0 +1,47 @@
+@mixin text-padding{
+	padding: 5px;
+}
+
+@mixin thumb-container-dimensions{
+	width: 130px;
+	height: 170px;
+}
+
+@mixin thumb-container-dimensions-padding{
+	width: 120px;
+	height: 160px;
+}
+
+@mixin container-colors{
+	.text{
+		background-color: #FFF;
+	}
+
+	.photo{
+		background-color: #d95e40;
+	}
+
+	.quote{
+		background-color: #f2992e;
+	}
+
+	.link{
+		background-color: #56bc8a;
+	}
+
+	.chat{
+		background-color: #529ecc;
+	}
+
+	.audio{
+		background-color: #a77dc2;
+	}
+
+	.video{
+		background-color: #748089;
+	}
+
+	.answer{
+		background-color: #529ecc;		
+	}
+}

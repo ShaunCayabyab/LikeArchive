@@ -205,7 +205,8 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 * PostConstructor
 * ===============
 *
-* Factory service for implementing the post thumbnail construction
+* Factory service for implementing the post thumbnail construction and other
+* Post attributes required of the view template.
 *
 * @since 1.1.0
 */
@@ -353,6 +354,8 @@ likeArchiveApp.factory('PostConstructor', function(){
 
 		// Setting up some known post object traits.
 		built_post.reblogged_from = post.blog_name;
+
+		// Need to create this attribute for Angular's ng-if to work properly
 		built_post.type = {isText: false, isPhoto: false, isQuote: false, isLink: false, isChat: false, isAudio: false, isVideo: false, isAnswer: false};
 		built_post.type.type = post.type;
 
