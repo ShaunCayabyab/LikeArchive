@@ -42,35 +42,36 @@
 				<div id="main-content">
 					<ul id="main-list">
 						<li class='post-cell' data-ng-repeat="post in thumbnails track by $index" data-cell="{{$index}}">
-							<div ng-if="post.type.isText" class="thumbnail-container text-container" ng-bind-html="post.body">
+							<div ng-if="post.type == 'text'" class="thumbnail-container text-container">
 							<!--Text Post-->
-								<h5 ng-if="post.type.hasTitle">{{post.title}}</h5>
-								{{ post.body }}
+								<h4 class="thumbnail-title" ng-if="post.hasTitle">{{post.title}}</h4>
+								<div ng-bind-html="post.body">{{ post.body }}</div>
 							</div>
 							
-							<div ng-if="post.type.isPhoto" class="thumbnail-container image-container" style="background-image: url({{ post.thumbnailURL }}); background-position: top; background-size: cover;">
+							<div ng-if="post.type == 'photo'" class="thumbnail-container image-container" style="background-image: url({{ post.thumbnail_url }}); background-position: top; background-size: cover;">
 							<!--Photo Post-->
 							</div>
 							
-							<div ng-if="post.type.isQuote" class="thumbnail-container quote-container">
+							<div ng-if="post.type == 'quote'" class="thumbnail-container quote-container">
 							<!--Quote Post-->
 							</div>
 							
-							<div ng-if="post.type.isLink" class="thumbnail-container link-container">
+							<div ng-if="post.type == 'link'" class="thumbnail-container link-container">
 							<!--Link Post-->
 							</div>
 							
-							<div ng-if="post.type.isVideo" class="thumbnail-container video-container">
+							<div ng-if="post.type == 'video'" class="thumbnail-container video-container" style="background-image: url({{ post.thumbnail_url }}); background-position: top; background-size: cover;">
 							<!--Video Post-->
+								<img class="video-svg" src="build/images/play-icon.png" />
 							</div>
 							
-							<div ng-if="post.type.isAudio" class="thumbnail-container audio-container">
+							<div ng-if="post.type == 'audio'" class="thumbnail-container audio-container">
 							<!--Audio Post-->
 								<h4>&#9658;{{post.title}}</h4>
 								<p>{{post.subtitle}}</p>
 							</div>
 
-							<div ng-if="post.type.isAnswer" class="thumbnail-container qa-container">
+							<div ng-if="post.type == 'answer'" class="thumbnail-container qa-container">
 							<!--Answer Post-->
 								<div class="question-container">
 									<p><b>{{post.question.asker}}:</b> {{post.question.question}}</p>
@@ -80,7 +81,7 @@
 								</div>
 							</div>
 							<a href="javascript:void(0);">
-								<div class="hover-container {{post.type.type}}" ng-click="individualPost($index)">
+								<div class="hover-container {{post.type}}" ng-click="individualPost($index)">
 									<p>liked from:<br>{{post.reblogged_from}}</p>
 								</div>
 								</a>
@@ -99,13 +100,16 @@
 								<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
 							</p>
 						</div>
-						<div ng-if="modal_post.post_type.isText">
+						<div ng-if="modal_post.post_type == 'text'">
 							<!--Text Modal-->
+							<div class="modal-content">
+								<h2 class="modal-text-title">{{modal_post.title}}</h2>
+							</div>
 							<div class="modal-caption" ng-bind-html="modal_post.body">
 								{{modal_post.body}}
 							</div>
 						</div>
-						<div ng-if="modal_post.post_type.isPhoto">
+						<div ng-if="modal_post.post_type == 'photo'">
 							<!--Photo Modal-->
 							<div class="modal-content">
 								<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[1].url}}" />
@@ -114,7 +118,20 @@
 								{{modal_post.caption}}
 							</div>
 						</div>
-						<div ng-if="modal_post.post_type.isAudio">
+						<div ng-if="modal_post.post_type == 'video'">
+							<!--Video Modal-->
+							<video ng-if="modal_post.video_type == 'tumblr'" width="100%" controls>
+								<source src="{{modal_post.video_url}}" type="video/mp4">
+								Your browser does not support the video tag
+							</video>
+							<div ng-if="modal_post.video_type == 'youtube'" class="modal-video">
+								<iframe ng-src="{{modal_post.permalink_url | trusted}}" frameborder="0" allowfullscreen></iframe>
+							</div>
+							<div class="modal-caption" ng-bind-html="modal_post.caption">
+								{{modal_post.caption}}
+							</div>
+						</div>
+						<div ng-if="modal_post.post_type == 'audio'">
 							<!--Audio Modal-->
 							<div class="modal-content">
 								<iframe class="tumblr_audio_player tumblr_audio_player_161433091425" src="{{modal_post.new_audio_url}}" frameborder="0" allowtransparency="true" scrolling="no" width="500" height="85"></iframe>

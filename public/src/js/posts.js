@@ -17,6 +17,8 @@ likeArchiveApp.config(function($sceDelegateProvider){
 
 		'self',
 		'http://*.tumblr.com/**',
+		'https://*.tumblr.com/**',
+		'https://www.youtube.com/**'
 	]);
 
 });
@@ -30,7 +32,7 @@ likeArchiveApp.config(function($sceDelegateProvider){
 *
 * @since 1.1.0
 */
-likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, AudioFormatter, $scope, $http){
+likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, SourceFormatter, $scope, $http){
 
 	//User to search
 	$scope.user_to_get = "rubberninja";
@@ -155,7 +157,7 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 			var individual_post = PostConstructor.buildPost(likes[i]);
 
 			// If this is an audio post, we need to do some data reformatting
-			if(likes[i].type === 'audio') likes[i] == AudioFormatter.reformatAudioSource(likes[i]);
+			if(likes[i].type === 'audio') likes[i] == SourceFormatter.reformatAudioSource(likes[i]);
 
 			//Give IDs to thumbnails
 			individual_post.ID = post_offset;
@@ -195,7 +197,11 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 * GETLIKEDPOSTS
 * =============
 *
-* Factory service to execute the http request
+* Factory service to execute the http request. The http request
+* references the PHP file responsible for executing the API call
+* via Tumblr PHP client. The PHP file then returns the retrieved
+* data to this factorice service, which will then execute the proper
+* functions upon success or failure.
 *
 * @since 1.1.0
 */
@@ -239,7 +245,10 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 * ===============
 *
 * Factory service for implementing the post thumbnail construction and other
-* Post attributes required of the view template.
+* Post attributes required of the view template. There are certain attributes
+* from the API call data that needs to be processed for better page performance,
+* such as selecting a lower resolution image to display or reformatting a text post
+* to display properly on a thumbnail.
 *
 * @since 1.1.0
 */
@@ -248,13 +257,16 @@ likeArchiveApp.factory('PostConstructor', function(){
 	/**
 	* textPost
 	* ========
+	*
 	* Constructor function for a text post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var textPost = function(post, post_to_build){
-		post_to_build.type.isText = true;
-		post_to_build.type.hasTitle = (post.title !== null) ? true : false;
+
+		post_to_build.hasTitle = (post.title !== null) ? true : false;
 		post_to_build.title = post.title;
 		post_to_build.body = post.body;
 		return post_to_build;
@@ -264,29 +276,29 @@ likeArchiveApp.factory('PostConstructor', function(){
 	* 
 	* photoPost
 	* =========
+	*
 	* Builder function for photo posts.
 	* Extracts appropriate JSON data
 	* for producing the photo posts 
 	* onto the view.
 	*
+	* @since 1.0.0
 	* @param {JSON} post
 	* @param {JSON} post_to_build
 	* @return {JSON} post_to_build - {thumbnailURL}
 	*/
 	var photoPost = function(post, post_to_build){
 
-		post_to_build.type.isPhoto = true;
-
 		// Iterate through the array to find the appropriate-sized image.
 		for(var i = 0; i < post.photos[0].alt_sizes.length; i++){
 			if(post.photos[0].alt_sizes[i].width <= 250){
-				post_to_build.thumbnailURL = post.photos[0].alt_sizes[i].url;
+				post_to_build.thumbnail_url = post.photos[0].alt_sizes[i].url;
 				break;
 			}
 		}
 
 		// If not found, let's just use the original uploaded image (first image object in the array)
-		if(!post_to_build.hasOwnProperty('thumbnailURL')) post_to_build.thumbnailURL = post.photos[0].alt_sizes[0].url;
+		if(!post_to_build.hasOwnProperty('thumbnail_url')) post_to_build.thumbnail_url = post.photos[0].alt_sizes[0].url;
 
 		// Got all we need. Return the photo post JSON.
 		return post_to_build;
@@ -294,49 +306,61 @@ likeArchiveApp.factory('PostConstructor', function(){
 
 	/**
 	* quotePost
-	* ========
+	* =========
+	*
 	* Constructor function for a quote post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var quotePost = function(post, post_to_build){
-		post_to_build.type.isQuote = true;
+
 		return post_to_build;			
 	};
 
 	/**
 	* linkPost
 	* ========
+	*
 	* Constructor function for a link post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var linkPost = function(post, post_to_build){
-		post_to_build.type.isLink = true;
+
 		return post_to_build;
 	};
 
 	/**
 	* chatPost
 	* ========
+	*
 	* Constructor function for a chat post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var chatPost = function(post, post_to_build){
-		post_to_build.type.isChat = true;
+
 		return post_to_build;
 	};
 
 	/**
 	* audioPost
 	* ========
+	*
 	* Constructor function for a audio post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var audioPost = function(post, post_to_build){
-		post_to_build.type.isAudio = true;
+
 		post_to_build.title = post.track_name;
 		post_to_build.subtitle = post.source_title;
 		return post_to_build;
@@ -345,26 +369,31 @@ likeArchiveApp.factory('PostConstructor', function(){
 	/**
 	* videoPost
 	* ========
+	*
 	* Constructor function for a video post.
+	*
+	* @since 1.0.0
 	* @param {JSON} post - Retrieved post data
 	* @param {JSON} post_to_build - The post we have to build
 	*/
 	var videoPost = function(post, post_to_build){
-		post_to_build.type.isVideo = true;
+
+		post_to_build.thumbnail_url = post.thumbnail_url;
 		return post_to_build;
 	};
 
 	/**
 	* answerPost
 	* ==========
+	*
 	* Constructs the JSON object for an answer post.
 	*
+	* @since 1.0.0
 	* @param {JSON} post
 	* @param {JSON} post_to_build
 	* @return {JSON} post_to_build - {question: {asker, askerURL, question}, answer}
 	*/
 	var answerPost = function(post, post_to_build){
-		post_to_build.type.isAnswer = true;
 
 		post_to_build.question = {asker: post.asking_name,
 			askerURL: post.asking_url,
@@ -378,9 +407,12 @@ likeArchiveApp.factory('PostConstructor', function(){
 	/**
 	* buildPost
 	* =========
+	*
 	* Main constructor function for building the post cell.
 	* Determines the post type then executes the appropriate function
 	* for each post.
+	* 
+	* @since 1.0.0
 	* @param {JSON} post - Given post data
 	*/
 	var buildPost = function(post){
@@ -391,8 +423,7 @@ likeArchiveApp.factory('PostConstructor', function(){
 		built_post.reblogged_from = post.blog_name;
 
 		// Need to create this attribute for Angular's ng-if to work properly
-		built_post.type = {isText: false, isPhoto: false, isQuote: false, isLink: false, isChat: false, isAudio: false, isVideo: false, isAnswer: false};
-		built_post.type.type = post.type;
+		built_post.type = post.type;
 
 		// Switch cases for proper post type function routing.
 		switch(post.type){
@@ -458,7 +489,7 @@ likeArchiveApp.factory('PostConstructor', function(){
 *
 * @since 1.1.0
 */
-likeArchiveApp.factory('AudioFormatter', function(){
+likeArchiveApp.factory('SourceFormatter', function(){
 
 	/**
 	* redoIFrame
@@ -494,3 +525,22 @@ likeArchiveApp.factory('AudioFormatter', function(){
 	};
 
 });
+
+
+/**
+* ==============
+* TRUSTED FILTER
+* ==============
+*
+* Filter for allowing YouTube videos to be framed on the iframe. Because of cross-
+* origin restrictions, Angular needs to know that the video link should be trusted.
+* Filter is applied during the data binding on the template.
+*
+* @since 1.1.0
+*/
+likeArchiveApp.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+            var video_id = url.split('v=')[1].split('&')[0];
+        return $sce.trustAsResourceUrl("https://www.youtube.com/embed/" + video_id);
+    };
+}]);

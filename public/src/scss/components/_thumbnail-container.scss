@@ -1,10 +1,31 @@
-.image-container{
+.image-container, .video-container{
 	display: table-cell;
 	text-align: center;
 	vertical-align: middle;
 	position: absolute;
 	border-radius: 5px;
 	@include thumb-container-dimensions;
+}
+
+.image-container > img{
+	max-width: 130px;
+	max-height: 170px;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	text-align: left;
+	z-index: 1;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.video-container{
+
+	.video-svg{
+		margin-top: 50%;
+		width: 35%;
+		opacity: 0.8;
+	}
 }
 
 .text-container{
@@ -19,18 +40,6 @@
 .text-container .tmblr-full> img{
 	max-width: 130px;
 	max-height: 170px;
-}
-
-.image-container > img{
-	max-width: 130px;
-	max-height: 170px;
-	display: inline-block;
-	vertical-align: middle;
-	position: relative;
-	text-align: left;
-	z-index: 1;
-	top: 50%;
-	transform: translateY(-50%);
 }
 
 .audio-container{
@@ -60,6 +69,7 @@
 .question-container{
 	padding: 2px 2px 2px 2px;
 	background-color: #529ecc;
+	word-wrap: break-word;
 	@include text-padding;
 }
 
