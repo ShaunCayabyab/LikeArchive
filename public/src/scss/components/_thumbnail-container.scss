@@ -33,6 +33,21 @@
 	transform: translateY(-50%);
 }
 
+.audio-container{
+	display: table-cell;
+	vertical-align: middle;
+	position: absolute;
+	border-radius: 5px;
+	@include thumb-container-dimensions-padding;
+	@include text-padding;
+	background-color: #a77dc2;
+	color: white;
+
+	h4{
+		margin: 0;
+	}
+}
+
 .qa-container{
 	display: table-cell;
 	text-align: center;

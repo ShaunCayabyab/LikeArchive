@@ -59,6 +59,10 @@
 		margin: 0 5px 0 5px;
 	}
 
+	.tag:first-child{
+		margin: 0 5px 0 0;
+	}
+
 	.tag:hover{
 		text-decoration: underline;
 	}

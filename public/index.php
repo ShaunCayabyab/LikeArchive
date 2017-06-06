@@ -64,6 +64,12 @@
 							<!--Video Post-->
 							</div>
 							
+							<div ng-if="post.type.isAudio" class="thumbnail-container audio-container">
+							<!--Audio Post-->
+								<h4>&#9658;{{post.title}}</h4>
+								<p>{{post.subtitle}}</p>
+							</div>
+
 							<div ng-if="post.type.isAnswer" class="thumbnail-container qa-container">
 							<!--Answer Post-->
 								<div class="question-container">
@@ -94,15 +100,24 @@
 							</p>
 						</div>
 						<div ng-if="modal_post.post_type.isText">
-						<!--Text Modal-->
+							<!--Text Modal-->
 							<div class="modal-caption" ng-bind-html="modal_post.body">
 								{{modal_post.body}}
 							</div>
 						</div>
 						<div ng-if="modal_post.post_type.isPhoto">
-						<!--Photo Modal-->
+							<!--Photo Modal-->
 							<div class="modal-content">
 								<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[1].url}}" />
+							</div>
+							<div class="modal-caption" ng-bind-html="modal_post.caption">
+								{{modal_post.caption}}
+							</div>
+						</div>
+						<div ng-if="modal_post.post_type.isAudio">
+							<!--Audio Modal-->
+							<div class="modal-content">
+								<iframe class="tumblr_audio_player tumblr_audio_player_161433091425" src="{{modal_post.new_audio_url}}" frameborder="0" allowtransparency="true" scrolling="no" width="500" height="85"></iframe>
 							</div>
 							<div class="modal-caption" ng-bind-html="modal_post.caption">
 								{{modal_post.caption}}

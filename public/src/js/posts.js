@@ -1,6 +1,36 @@
 var likeArchiveApp = angular.module('likeArchive', ['ngSanitize']);
 
-likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, $scope, $http){
+/**
+* ==========
+* APP CONFIG
+* ==========
+*
+* Config module for allowing external asset loading from Tumblr. This is mainly to allow embedding of 
+* audio and video urls given from the Tumblr API; these are external assets not provided by the API endpoints,
+* so Angular will initially block such requests.
+*
+* @since 1.1.0
+*/
+likeArchiveApp.config(function($sceDelegateProvider){
+
+	$sceDelegateProvider.resourceUrlWhitelist([
+
+		'self',
+		'http://*.tumblr.com/**',
+	]);
+
+});
+
+/**
+* ==============
+* APP CONTROLLER
+* ==============
+*
+* Main controller module for the application
+*
+* @since 1.1.0
+*/
+likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, AudioFormatter, $scope, $http){
 
 	//User to search
 	$scope.user_to_get = "rubberninja";
@@ -124,6 +154,9 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 
 			var individual_post = PostConstructor.buildPost(likes[i]);
 
+			// If this is an audio post, we need to do some data reformatting
+			if(likes[i].type === 'audio') likes[i] == AudioFormatter.reformatAudioSource(likes[i]);
+
 			//Give IDs to thumbnails
 			individual_post.ID = post_offset;
 			post_offset++;
@@ -159,7 +192,7 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 
 /**
 * =============
-* GetLikedPosts
+* GETLIKEDPOSTS
 * =============
 *
 * Factory service to execute the http request
@@ -202,7 +235,7 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 
 /**
 * ===============
-* PostConstructor
+* POSTCONSTRUCTOR
 * ===============
 *
 * Factory service for implementing the post thumbnail construction and other
@@ -304,6 +337,8 @@ likeArchiveApp.factory('PostConstructor', function(){
 	*/
 	var audioPost = function(post, post_to_build){
 		post_to_build.type.isAudio = true;
+		post_to_build.title = post.track_name;
+		post_to_build.subtitle = post.source_title;
 		return post_to_build;
 	};
 
@@ -408,6 +443,54 @@ likeArchiveApp.factory('PostConstructor', function(){
 			return buildPost(someData);
 		}
 
+	};
+
+});
+
+
+/**
+* ==============
+* AUDIOFORMATTER
+* ==============
+*
+* Factory service to reformat audio post data to work with Angular.
+* Audio source is an iframe, which cannot be rendered through data binding.
+*
+* @since 1.1.0
+*/
+likeArchiveApp.factory('AudioFormatter', function(){
+
+	/**
+	* redoIFrame
+	* ==========
+	*
+	* Function serves to reformat the audio source data
+	* From a given audio post. Because Tumblr's API restricts
+	* direct access to the audio source url (for some reason),
+	* This is a very hack-ish roundabout for that.
+	*
+	* @since 1.1.0
+	*/
+	var redoIFrame = function(somePost){
+
+		// Create a dummy HTML element to hold the iframe
+		var holder = document.createElement('html');
+		holder.innerHTML = somePost.embed;
+
+		// Grab the iframe src
+		var source_url = holder.getElementsByTagName('iframe')[0].attributes.src.value;
+
+		// Set it in the original post data and return
+		somePost.new_audio_url = source_url;
+
+		return somePost;
+
+	};
+
+	return {
+		reformatAudioSource: function(somePost){
+			return redoIFrame(somePost);
+		}
 	};
 
 });
