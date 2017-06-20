@@ -1,6 +1,6 @@
 /**
 * =======================
-* POST THUMNAIL DIRECTIVE
+* POST THUMBNAIL DIRECTIVE
 * =======================
 *
 * Directive file for the post thumbnail templates. Directive can dynamically load

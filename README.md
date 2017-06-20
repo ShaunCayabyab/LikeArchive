@@ -16,16 +16,43 @@ Within the application, users can view the liked posts of theirs, or of a Tumblr
 
 ## DEVELOPMENT SETUP
 
+### DOCKER (EXPERIMENTAL)
+
 ```
 git clone git@github.com:ShaunCayabyab/LikeArchive.git
-cd src
+cd public
 composer install
 cd ..
 docker-compose up -d
 ```
 Then `open http://$(docker-machine ip):8080` or `localhost:8080`
 
+### MAMP/LAMP/WAMP
+
+Clone the repository into the hosting direcotry of your server.
+
+```
+cd LikeArchive/public
+composer install
+```
+
+## API KEYS
+
+Obviously, API keys are not included in this repository. To include API keys, create a file `public/secure/api_key.php` and add the following:
+
+```
+<?php
+
+$api_key = '[YOUR API KEY]';
+
+?>
+```
+
+LikeArchive currently doesn't require any authentication.
+
+
 ## UPDATES
+- `06/20/2017` => Applying better AngularJS design practices (i.e. directives and templates), and things are starting to look a lot better! Audio and video posts are now viewable.
 - `05/25/2017` => Picked this project back up again, and man it needed improving! Converted to use AngularJS for front-end functionality.
 - `08/23/2016` => Added a feature to search for users and display their liked posts, if made public. Also added a display for text posts.
 - `08/21/2016` => Initial commit, yay! Application currently can only view a single blog's liked posts. Looking into implementing a feature to view liked posts within a certain month.
