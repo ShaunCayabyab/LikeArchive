@@ -13,6 +13,11 @@
 		<script src="https://code.angularjs.org/1.5.6/angular-sanitize.min.js"></script>
 		<!--App file-->
 		<script type="text/javascript" src="src/js/posts.js"></script>
+		<script type="text/javascript" src="src/js/services/get-liked-posts.js"></script>
+		<script type="text/javascript" src="src/js/services/post-constructor.js"></script>
+		<script type="text/javascript" src="src/js/services/source-formatter.js"></script>
+		<script type="text/javascript" src="src/js/filters/trusted-filter.js"></script>
+		<script type="text/javascript" src="src/js/controllers/user-search.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				// Prevent modal window from closing when interacting with individual post
