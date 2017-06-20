@@ -63,7 +63,7 @@
 				</section>
 				<!--Post Modal Window-->
 				<div id="popup-container" ng-click="clearModal()">
-					<modal-window></modal-window>
+					<modal-window post="modal_post"></modal-window>
 				</div>
 			</div>
 		</div>

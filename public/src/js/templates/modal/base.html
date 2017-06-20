@@ -1,0 +1,19 @@
+<div id="modal-box">
+	<div class="modal-header">
+		<p>
+			<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
+			<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
+		</p>
+	</div>
+	<div ng-include="getTemplate(modal_post.post_type)"></div>
+	<div class="modal-footer">
+		<div class="tags-list">
+			<p>
+				<a class="tag" ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
+			</p>
+		</div>
+		<div class="notes">
+			<p>{{modal_post.note_count}} notes</p>
+		</div>
+	</div>
+</div>
