@@ -34,22 +34,22 @@
 	<body>
 		<div ng-app="likeArchive">
 			<div ng-controller="UserSearch">
-				<div id="navbar">
+				<header id="navbar">
 					<div id="nav-content">
 						<span class="nav-logo">
 							<img id="nav-logo" src="build/images/LikeArchiveLogo.png" />
 						</span>
 						<span class="user-input">
-							<input id="user-search-input" type="text" name="user" value="rubberninja" placeholder="enter username">.tumblr.com
+							<input id="user-search-input" type="text" name="user" value="rubberninja" placeholder="enter username" ng-keyup="$event.keyCode == 13 && getUserLikes()">.tumblr.com
 							<button type="submit" id="search-submit" class="btn btn-search" ng-click="getUserLikes()">Search</button>
 						</span>
 					</div>
-				</div>
+				</header>
 				<!--Post Thumbnails-->
-				<div id="main-content">
+				<section id="main-content">
 					<ul id="main-list">
 						<li class='post-cell' data-ng-repeat="post in thumbnails track by $index" data-cell="{{$index}}">
-							<post-thumbnail post="post"></post-thumbnail>
+							<post-thumbnail data=post></post-thumbnail>
 							<a href="javascript:void(0);">
 								<div class="hover-container {{post.type}}" ng-click="individualPost($index)">
 									<p>liked from:<br>{{post.reblogged_from}}</p>
@@ -60,7 +60,7 @@
 							<img src="build/images/plus.png" />
 						</li>
 					</ul>
-				</div>
+				</section>
 				<!--Post Modal Window-->
 				<div id="popup-container" ng-click="clearModal()">
 					<modal-window></modal-window>
