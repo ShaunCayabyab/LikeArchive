@@ -9,6 +9,10 @@
 */
 likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, SourceFormatter, $scope, $http){
 
+	var user_search = this;
+	user_search.getMoreLikes = $scope.getMoreLikes;
+	user_search.individualPost = $scope.individualPost;
+
 	$scope.user_to_get = "rubberninja";
 	$scope.all_post_data = [];
 	$scope.thumbnails = [];

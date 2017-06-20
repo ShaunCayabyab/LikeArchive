@@ -1,0 +1,38 @@
+<div ng-if="post.type == 'text'" class="thumbnail-container text-container">
+<!--Text Post-->
+	<h4 class="thumbnail-title" ng-if="post.hasTitle">{{post.title}}</h4>
+	<div ng-bind-html="post.body">{{ post.body }}</div>
+</div>
+
+<div ng-if="post.type == 'photo'" class="thumbnail-container image-container" style="background-image: url({{ post.thumbnail_url }}); background-position: top; background-size: cover;">
+<!--Photo Post-->
+</div>
+
+<div ng-if="post.type == 'quote'" class="thumbnail-container quote-container">
+<!--Quote Post-->
+</div>
+
+<div ng-if="post.type == 'link'" class="thumbnail-container link-container">
+<!--Link Post-->
+</div>
+
+<div ng-if="post.type == 'video'" class="thumbnail-container video-container" style="background-image: url({{ post.thumbnail_url }}); background-position: top; background-size: cover;">
+<!--Video Post-->
+	<img class="video-svg" src="build/images/play-icon.png" />
+</div>
+
+<div ng-if="post.type == 'audio'" class="thumbnail-container audio-container">
+<!--Audio Post-->
+	<h4>&#9658;{{post.title}}</h4>
+	<p>{{post.subtitle}}</p>
+</div>
+
+<div ng-if="post.type == 'answer'" class="thumbnail-container qa-container">
+<!--Answer Post-->
+	<div class="question-container">
+		<p><b>{{post.question.asker}}:</b> {{post.question.question}}</p>
+	</div>
+	<div class="answer-container" ng-bind-html="post.answer">
+		{{post.answer}}
+	</div>
+</div>
