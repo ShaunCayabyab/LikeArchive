@@ -1,0 +1,58 @@
+<div id="modal-box">
+	<div class="modal-header">
+		<p>
+			<span class="who-reblog">Liked from {{modal_post.blog_name}}</span>
+			<span ng-if="modal_post.hasSource" class="who-source">Source: {{modal_post.source_title}}</span>
+		</p>
+	</div>
+	<div ng-if="modal_post.post_type == 'text'">
+		<!--Text Modal-->
+		<div class="modal-content">
+			<h2 class="modal-text-title">{{modal_post.title}}</h2>
+		</div>
+		<div class="modal-caption" ng-bind-html="modal_post.body">
+			{{modal_post.body}}
+		</div>
+	</div>
+	<div ng-if="modal_post.post_type == 'photo'">
+		<!--Photo Modal-->
+		<div class="modal-content">
+			<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[1].url}}" />
+		</div>
+		<div class="modal-caption" ng-bind-html="modal_post.caption">
+			{{modal_post.caption}}
+		</div>
+	</div>
+	<div ng-if="modal_post.post_type == 'video'">
+		<!--Video Modal-->
+		<video ng-if="modal_post.video_type == 'tumblr'" width="100%" controls>
+			<source src="{{modal_post.video_url}}" type="video/mp4">
+			Your browser does not support the video tag
+		</video>
+		<div ng-if="modal_post.video_type == 'youtube'" class="modal-video">
+			<iframe ng-src="{{modal_post.permalink_url | trusted}}" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="modal-caption" ng-bind-html="modal_post.caption">
+			{{modal_post.caption}}
+		</div>
+	</div>
+	<div ng-if="modal_post.post_type == 'audio'">
+		<!--Audio Modal-->
+		<div class="modal-content">
+			<iframe class="tumblr_audio_player tumblr_audio_player_161433091425" src="{{modal_post.new_audio_url}}" frameborder="0" allowtransparency="true" scrolling="no" width="500" height="85"></iframe>
+		</div>
+		<div class="modal-caption" ng-bind-html="modal_post.caption">
+			{{modal_post.caption}}
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="tags-list">
+			<p>
+				<a class="tag" ng-repeat="tag in modal_post.tags track by $index" href="">#{{tag}}</a>
+			</p>
+		</div>
+		<div class="notes">
+			<p>{{modal_post.note_count}} notes</p>
+		</div>
+	</div>
+</div>

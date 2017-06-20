@@ -1,6 +1,7 @@
 //The start of it all
 var likeArchiveApp = angular.module('likeArchive', ['ngSanitize']);
 
+
 /**
 * ==========
 * APP CONFIG
