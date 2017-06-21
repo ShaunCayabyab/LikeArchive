@@ -1,6 +1,5 @@
-<!--Photo Modal-->
 <div class="modal-content">
-	<img ng-repeat="photo in modal_post.photos track by $index" src="{{photo.alt_sizes[1].url}}" />
+	<img ng-repeat="photo in modal_post.photos track by $index" fallback-src="https://www.google.com/favicon.ico" ng-src="{{photo.alt_sizes[1].url}}" />
 </div>
 <div class="modal-caption" ng-bind-html="modal_post.caption">
 	{{modal_post.caption}}

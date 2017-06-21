@@ -1,7 +1,7 @@
 /**
-* ==============
+* ==========
 * USERSEARCH
-* ==============
+* ==========
 *
 * Main controller module for the application
 *
@@ -125,11 +125,8 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 		for(var i = 0; i < likes.length; i++){
 
 			var individual_post = PostConstructor.buildPost(likes[i]);
-
-			// If this is an audio post, we need to do some data reformatting
 			if(likes[i].type === 'audio') likes[i] == SourceFormatter.reformatAudioSource(likes[i]);
-
-			//Give IDs to thumbnails
+		
 			individual_post.ID = post_offset;
 			post_offset++;
 

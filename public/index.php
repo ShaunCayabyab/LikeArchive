@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="src/js/posts.js"></script>
 		<script type="text/javascript" src="src/js/directives/directive-thumbnails.js"></script>
 		<script type="text/javascript" src="src/js/directives/directive-modal.js"></script>
+		<script type="text/javascript" src="src/js/directives/directive-fallback-src.js"></script>
 		<script type="text/javascript" src="src/js/services/get-liked-posts.js"></script>
 		<script type="text/javascript" src="src/js/services/post-constructor.js"></script>
 		<script type="text/javascript" src="src/js/services/source-formatter.js"></script>

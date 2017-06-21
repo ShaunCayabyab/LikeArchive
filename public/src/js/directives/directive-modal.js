@@ -1,3 +1,15 @@
+/**
+* ======================
+* MODAL WINDOW DIRECTIVE
+* ======================
+*
+* Directive for the modal window used to diplay an individual post.
+* Directive uses a base template to display the general information
+* (i.e. notes, source name, etc.), which uses other template modules
+* depending on the type of post being displayed.
+*
+* @since 1.1.0
+*/
 likeArchiveApp.directive('modalWindow', function(){
 
 	return{
@@ -6,7 +18,6 @@ likeArchiveApp.directive('modalWindow', function(){
 		templateUrl: '../public/src/js/templates/modal/base.html',
 		link: function(scope, element, attrs){
 
-			//var post_type = (scope.modal_post !== undefined) ? scope.modal_post.post_type : "";
 			var post_type = "";
 
 			scope.getTemplate = function(somePostType){

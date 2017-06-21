@@ -1,10 +1,9 @@
-<!--Video Modal-->
 <video ng-if="modal_post.video_type == 'tumblr'" width="100%" controls>
-	<source src="{{modal_post.video_url}}" type="video/mp4">
+	<source fallback-src="" ng-src="{{modal_post.video_url}}" type="video/mp4">
 	Your browser does not support the video tag
 </video>
 <div ng-if="modal_post.video_type == 'youtube'" class="modal-video">
-	<iframe ng-src="{{modal_post.permalink_url | trusted}}" frameborder="0" allowfullscreen></iframe>
+	<iframe fallback-src="" ng-src="{{modal_post.permalink_url | trusted}}" frameborder="0" allowfullscreen></iframe>
 </div>
 <div class="modal-caption" ng-bind-html="modal_post.caption">
 	{{modal_post.caption}}
