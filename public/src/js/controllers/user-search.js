@@ -7,7 +7,7 @@
 *
 * @since 1.1.0
 */
-likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, SourceFormatter, $scope, $http){
+likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostConstructor, SourceFormatter, $scope, $http, $log){
 
 	var user_search = this;
 	user_search.getMoreLikes = $scope.getMoreLikes;
@@ -33,9 +33,10 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 		$scope.all_post_data = [];
 		$scope.thumbnails = [];
 
-		//Clear the view of all posts
+		//Clear the view of all posts and errors
 		$("#error-message").css('display', 'none');
 		$("#load-cell").fadeOut(1);
+		angular.element(document.querySelector('#error')).attr('type', '');
 
 		//Grab the search query
 		$scope.user_to_get = document.getElementById('user-search-input').value;
@@ -119,30 +120,39 @@ likeArchiveApp.controller('UserSearch', function UserSearch(GetLikedPosts, PostC
 	onSuccess = function(data){
 
 		var post_offset = $scope.all_post_data.length;
-		var likes = angular.fromJson(data).liked_posts;
-		
-		//Iterate through likes to construct thumbnails
-		for(var i = 0; i < likes.length; i++){
 
-			var individual_post = PostConstructor.buildPost(likes[i]);
-			if(likes[i].type === 'audio') likes[i] == SourceFormatter.reformatAudioSource(likes[i]);
-		
-			individual_post.ID = post_offset;
-			post_offset++;
-
-			$scope.all_post_data.push(likes[i]);
-			$scope.thumbnails.push(individual_post);
+		try{
+			var likes = angular.fromJson(data).liked_posts;
+			iterate();
 		}
-
-		//Bring back the load cell
-		$("#load-cell").fadeIn(1);
+		catch(err){
+			$log.warn("Oops! It seems that this user doesn't exist, or that this user has their likes set to private.");
+			angular.element(document.querySelector('#error')).attr('type', 'user');
+		}
 		
+		//Function for iterating upon success
+		function iterate(){
+
+			for(var i = 0; i < likes.length; i++){
+
+				var individual_post = PostConstructor.buildPost(likes[i]);
+				if(likes[i].type === 'audio') likes[i] == SourceFormatter.reformatAudioSource(likes[i]);
+			
+				individual_post.ID = post_offset;
+				post_offset++;
+
+				$scope.all_post_data.push(likes[i]);
+				$scope.thumbnails.push(individual_post);
+			}
+
+			$("#load-cell").fadeIn(1);
+		}
 	}
 
 
 	/**
-	* newUserFailure
-	* ==============
+	* onFailure
+	* =========
 	*
 	* Function invoked when API request fails
 	*
