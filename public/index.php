@@ -15,20 +15,13 @@
 		<script type="text/javascript" src="src/js/posts.js"></script>
 		<script type="text/javascript" src="src/js/directives/directive-thumbnails.js"></script>
 		<script type="text/javascript" src="src/js/directives/directive-modal.js"></script>
+		<script type="text/javascript" src="src/js/directives/directive-error-display.js"></script>
 		<script type="text/javascript" src="src/js/directives/directive-fallback-src.js"></script>
 		<script type="text/javascript" src="src/js/services/get-liked-posts.js"></script>
 		<script type="text/javascript" src="src/js/services/post-constructor.js"></script>
 		<script type="text/javascript" src="src/js/services/source-formatter.js"></script>
 		<script type="text/javascript" src="src/js/filters/trusted-filter.js"></script>
 		<script type="text/javascript" src="src/js/controllers/user-search.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				// Prevent modal window from closing when interacting with individual post
-				$("#modal-box").click(function(event){
-					event.stopPropagation();
-				});
-			});
-		</script>
 		<link rel="stylesheet" href="build/css/main.css" media="screen">
 		<title>LikeArchive</title>
 	</head>
@@ -61,6 +54,7 @@
 							<img src="build/images/plus.png" />
 						</li>
 					</ul>
+					<error-display type="" id="error"></error-display>
 				</section>
 				<!--Post Modal Window-->
 				<div id="popup-container" ng-click="clearModal()">

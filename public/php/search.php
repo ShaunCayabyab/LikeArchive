@@ -13,8 +13,11 @@
 	$user = ( isset($search_query->user) ) ? $search_query->user . ".tumblr.com" : "tumblr.com";
 
 	// Makes the request for getting the liked posts
-	$getter = $client->getBlogLikes($user, array('limit' => $limit, 'before' => $before));
-
-	//return JSON of liked posts retrieved from GET request
-	echo json_encode($getter);
+	try{
+		$getter = $client->getBlogLikes($user, array('limit' => $limit, 'before' => $before));
+		echo json_encode( $getter );
+	}
+	catch(Exception $e){
+		echo json_encode( array( 'error' => true ) );
+	}
 ?>
