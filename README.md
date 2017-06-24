@@ -16,7 +16,7 @@ Within the application, users can view the liked posts of theirs, or of a Tumblr
 
 ## DEVELOPMENT SETUP
 
-### DOCKER (EXPERIMENTAL)
+### DOCKER
 
 ```
 git clone git@github.com:ShaunCayabyab/LikeArchive.git
@@ -25,7 +25,7 @@ composer install
 cd ..
 docker-compose up -d
 ```
-Then `open http://$(docker-machine ip):8080` or `localhost:8080`
+Then `open localhost:8383`
 
 ### MAMP/LAMP/WAMP
 

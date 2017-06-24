@@ -32,7 +32,7 @@ likeArchiveApp.factory('GetLikedPosts', function($http){
 
 			$http({
 				method: 'POST',
-				url: '../public/php/search.php',
+				url: '../php/search.php',
 				data: {user: user, number: 50, before: date}
 			})
 			.success(onSuccess)

@@ -15,7 +15,7 @@ likeArchiveApp.directive('modalWindow', function(){
 	return{
 		restrict: 'AE',
 		scope: false,
-		templateUrl: '../public/src/js/templates/modal/base.html',
+		templateUrl: '../src/js/templates/modal/base.html',
 		link: function(scope, element, attrs){
 
 			var post_type = "";
@@ -23,7 +23,7 @@ likeArchiveApp.directive('modalWindow', function(){
 			scope.getTemplate = function(somePostType){
 				post_type = (somePostType !== undefined) ? somePostType : "text";
 
-				var baseUrl = "../public/src/js/templates/modal/";
+				var baseUrl = "../src/js/templates/modal/";
 				var templateMap = {
 					text: 'text.html',
 		            photo: 'photo.html',
@@ -36,7 +36,7 @@ likeArchiveApp.directive('modalWindow', function(){
 		        };
 
 		        //Use a fallback just in case post type returns undefined
-		        return ( baseUrl + templateMap[post_type] ) || "../public/src/js/templates/template-modal.html" ;
+		        return ( baseUrl + templateMap[post_type] ) || "../src/js/templates/template-modal.html" ;
 			}
 		}
 	};

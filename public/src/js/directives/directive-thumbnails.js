@@ -20,7 +20,7 @@ likeArchiveApp.directive('postThumbnail', function(){
 		link: function(scope, element, attrs){
 
 			scope.getTemplate = function(){
-				var baseUrl = "../public/src/js/templates/thumbnails/";
+				var baseUrl = "../src/js/templates/thumbnails/";
 				var templateMap = {
 					text: 'text.html',
 		            photo: 'photo.html',
@@ -33,7 +33,7 @@ likeArchiveApp.directive('postThumbnail', function(){
 		        };
 
 		        //Use a fallback just in case post type returns undefined
-		        return ( baseUrl + templateMap[scope.post.type] ) || "../public/src/js/templates/template-thumbnails.html" ;
+		        return ( baseUrl + templateMap[scope.post.type] ) || "../src/js/templates/template-thumbnails.html" ;
 			}
 		}
 	};

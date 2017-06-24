@@ -1,21 +1,9 @@
-# PHP Web Server
-apache:
-  container_name: like-archive
-  build: .
-  ports:
-    - "8080:80"
-  volumes:
-    - ./config:/usr/local/etc/php
-    - ./public:/var/www/html
-  links:
-    - mysql:mysql
-  restart: always
+version: '2'
 
-# MySQL Server
-mysql:
-  container_name: like-archive-mysql
-  image: mysql
-  environment:
-    MYSQL_ROOT_PASSWORD: 'root'
-  volumes:
-    - ./database:/docker-entrypoint-initdb.d
+services:
+  php:
+    build: ./config
+    ports:
+      - 8383:80
+    volumes:
+      - ./public/:/var/www/html

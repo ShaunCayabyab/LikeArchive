@@ -18,7 +18,7 @@ likeArchiveApp.directive('errorDisplay', function($log){
 		link: function(scope, element, attrs){
 
 			scope.getErrorMessage = function(){
-				var baseUrl = "../public/src/js/templates/errors/";
+				var baseUrl = "../src/js/templates/errors/";
 				var templateMap = {
 					text: 'error-user.html'
 		        };
